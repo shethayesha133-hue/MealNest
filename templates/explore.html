@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Explore Meals | MealNest
+{% endblock %}
+
+
+{% block content %}
+
+
+<!-- =========================
+     PAGE HEADER
+========================= -->
+
+<section class="page-header">
+
+    <span>
+        MEALNEST
+    </span>
+
+    <h1>
+        Explore Meals
+    </h1>
+
+    <p>
+        Discover delicious recipes from different categories.
+    </p>
+
+</section>
+
+
+
+<!-- =========================
+     SEARCH
+========================= -->
+
+<section class="explore-search">
+
+    <form
+        action="{{ url_for('search') }}"
+        method="GET">
+
+        <input
+            type="text"
+            name="q"
+            placeholder="Search meals...">
+
+        <button type="submit">
+            🔍 Search
+        </button>
+
+    </form>
+
+</section>
+
+
+
+<!-- =========================
+     MEALS
+========================= -->
+
+<section class="section explore-section">
+
+
+    <div class="section-title">
+
+        <div>
+
+            <span>
+                ALL RECIPES
+            </span>
+
+            <h2>
+                Explore Our Meals
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="meal-grid">
+
+        {% for meal in meals %}
+
+        <article class="meal-card">
+
+
+            <!-- IMAGE -->
+
+            <div class="meal-image">
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename=meal.image
+                    ) }}"
+                    alt="{{ meal.name }}">
+
+
+                <span class="meal-tag">
+
+                    {{ meal.category }}
+
+                </span>
+
+            </div>
+
+
+            <!-- CONTENT -->
+
+            <div class="meal-info">
+
+                <h3>
+                    {{ meal.name }}
+                </h3>
+
+
+                <p>
+                    Discover ingredients and
+                    cooking instructions.
+                </p>
+
+
+               <div class="card-actions">
+
+    <a href="{{ url_for('recipe', meal_id=meal['id']) }}" class="view-recipe">
+        View Recipe →
+    </a>
+
+    <a href="{{ url_for('add_favorite', meal_id=meal['id']) }}"
+       class="favorite-btn"
+       title="Add to Favorites">
+        ❤️ Favorite
+    </a>
+
+    <a
+       href="{{ url_for('edit_recipe', meal_id=meal.id) }}"
+        class="edit-btn"
+    >
+      ✏️ Edit Recipe
+    </a>
+
+
+</div> 
+
+            </div>
+
+        </article>
+
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <div>
+                🍽️
+            </div>
+
+            <h2>
+                No Meals Found
+            </h2>
+
+            <p>
+                Start by adding your first recipe.
+            </p>
+
+
+            <a href="{{ url_for('add_recipe') }}">
+
+                + Add Recipe
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+{% endblock %}

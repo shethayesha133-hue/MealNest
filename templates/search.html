@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}
+Search | MealNest
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+
+    <span>MEALNEST SEARCH</span>
+
+    <h1>
+        Search Meals
+    </h1>
+
+    <p>
+        Find your favorite meal quickly.
+    </p>
+
+</section>
+
+
+<section class="explore-search">
+
+    <form
+        action="{{ url_for('search') }}"
+        method="GET">
+
+        <input
+            type="text"
+            name="q"
+            value="{{ query or '' }}"
+            placeholder="Search for burger, pizza, pasta..."
+            required>
+
+
+        <button type="submit">
+            🔍 Search
+        </button>
+
+    </form>
+
+</section>
+
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div>
+
+            {% if query %}
+
+                <span>
+                    SEARCH RESULTS
+                </span>
+
+                <h2>
+                    Results for "{{ query }}"
+                </h2>
+
+            {% else %}
+
+                <span>
+                    MEALNEST
+                </span>
+
+                <h2>
+                    Search Results
+                </h2>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <div class="meal-grid">
+
+        {% for meal in meals %}
+
+        <article class="meal-card">
+
+            <div class="meal-image">
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename=meal.image
+                    ) }}"
+                    alt="{{ meal.name }}">
+
+                <span class="meal-tag">
+                    {{ meal.category }}
+                </span>
+
+            </div>
+
+
+            <div class="meal-info">
+
+                <h3>
+                    {{ meal.name }}
+                </h3>
+
+
+                <p>
+                    Explore ingredients,
+                    images and instructions.
+                </p>
+
+
+                <a
+                    href="{{ url_for(
+                        'recipe',
+                        meal_id=meal.id
+                    ) }}">
+
+                    View Recipe →
+
+                </a>
+
+            </div>
+
+        </article>
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <div>🔍</div>
+
+            <h2>
+                No Meals Found
+            </h2>
+
+            <p>
+                Try searching with another meal name.
+            </p>
+
+
+            <a href="{{ url_for('explore') }}">
+                Explore All Meals
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

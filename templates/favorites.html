@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}
+Favorites | MealNest
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+
+    <span>YOUR COLLECTION</span>
+
+    <h1>
+        Favorite Meals ❤️
+    </h1>
+
+    <p>
+        Keep your favorite recipes in one place.
+    </p>
+
+</section>
+
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div>
+
+            <span>
+                SAVED RECIPES
+            </span>
+
+            <h2>
+                Your Favorites
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="meal-grid">
+
+        {% for meal in meals %}
+
+        <article class="meal-card favorite-card">
+
+
+            <div class="meal-image">
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename=meal.image
+                    ) }}"
+                    alt="{{ meal.name }}">
+
+
+                <span class="favorite-heart">
+                    ♥
+                </span>
+
+
+                <span class="meal-tag">
+                    {{ meal.category }}
+                </span>
+
+            </div>
+
+
+            <div class="meal-info">
+
+                <h3>
+                    {{ meal.name }}
+                </h3>
+
+
+                <p>
+                    Your saved favorite recipe.
+                </p>
+
+
+                <div class="favorite-actions">
+
+                    <a
+                        href="{{ url_for(
+                            'recipe',
+                            meal_id=meal.id
+                        ) }}">
+
+                        View Recipe →
+
+                    </a>
+
+
+                    <a
+                        href="{{ url_for(
+                            'remove_favorite',
+                            meal_id=meal.id
+                        ) }}"
+                        class="remove-favorite">
+
+                        Remove
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <div>
+                ❤️
+            </div>
+
+            <h2>
+                No Favorite Meals Yet
+            </h2>
+
+            <p>
+                Explore meals and save your
+                favorite recipes here.
+            </p>
+
+
+            <a href="{{ url_for('explore') }}">
+
+                Explore Meals →
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

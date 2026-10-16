@@ -1,0 +1,448 @@
+/* =========================================
+   MEALNEST JAVASCRIPT
+========================================= */
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    /* =====================================
+       INGREDIENT SYSTEM
+    ===================================== */
+
+    window.addIngredient = function () {
+
+        const container =
+            document.getElementById(
+                "ingredients-container"
+            );
+
+
+        if (!container) {
+            return;
+        }
+
+
+        const row =
+            document.createElement("div");
+
+
+        row.className =
+            "ingredient-input-row";
+
+
+        row.innerHTML = `
+
+            <input
+                type="text"
+                name="ingredient_name[]"
+                placeholder="Ingredient name"
+                required>
+
+            <input
+                type="text"
+                name="ingredient_quantity[]"
+                placeholder="Quantity"
+                required>
+
+            <button
+                type="button"
+                class="remove-ingredient"
+                onclick="removeIngredient(this)">
+
+                ×
+
+            </button>
+
+        `;
+
+
+        container.appendChild(row);
+
+    };
+
+
+    window.removeIngredient = function (button) {
+
+        const container =
+            document.getElementById(
+                "ingredients-container"
+            );
+
+
+        const rows =
+            container.querySelectorAll(
+                ".ingredient-input-row"
+            );
+
+
+        if (rows.length <= 1) {
+
+            alert(
+                "At least one ingredient is required."
+            );
+
+            return;
+
+        }
+
+
+        button
+            .closest(".ingredient-input-row")
+            .remove();
+
+    };
+
+
+
+    /* =====================================
+       IMAGE PREVIEW
+    ===================================== */
+
+    const imageInput =
+        document.getElementById("image");
+
+
+    if (imageInput) {
+
+        imageInput.addEventListener(
+            "change",
+            function () {
+
+                const file = this.files[0];
+
+
+                if (!file) {
+                    return;
+                }
+
+
+                if (!file.type.startsWith("image/")) {
+
+                    alert(
+                        "Please select a valid image."
+                    );
+
+                    this.value = "";
+
+                    return;
+
+                }
+
+
+                let preview =
+                    document.getElementById(
+                        "image-preview"
+                    );
+
+
+                if (!preview) {
+
+                    preview =
+                        document.createElement("img");
+
+                    preview.id =
+                        "image-preview";
+
+                    preview.style.width =
+                        "180px";
+
+                    preview.style.height =
+                        "130px";
+
+                    preview.style.objectFit =
+                        "cover";
+
+                    preview.style.borderRadius =
+                        "10px";
+
+                    preview.style.marginTop =
+                        "12px";
+
+                    imageInput.parentElement
+                        .appendChild(preview);
+
+                }
+
+
+                const reader =
+                    new FileReader();
+
+
+                reader.onload = function (event) {
+
+                    preview.src =
+                        event.target.result;
+
+                };
+
+
+                reader.readAsDataURL(file);
+
+            }
+        );
+
+    }
+
+
+
+    /* =====================================
+       SCROLL REVEAL
+    ===================================== */
+
+    const revealItems =
+        document.querySelectorAll(
+            ".meal-card, .category-card, .stat-card"
+        );
+
+
+    const observer =
+        new IntersectionObserver(
+            function (entries) {
+
+                entries.forEach(function (entry) {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.classList.add(
+                            "show-card"
+                        );
+
+                    }
+
+                });
+
+            },
+            {
+                threshold: 0.1
+            }
+        );
+
+
+    revealItems.forEach(function (item) {
+
+        item.classList.add(
+            "hidden-card"
+        );
+
+        observer.observe(item);
+
+    });
+
+
+
+    /* =====================================
+       SEARCH INPUT
+    ===================================== */
+
+    const searchInputs =
+        document.querySelectorAll(
+            "input[name='q']"
+        );
+
+
+    searchInputs.forEach(function (input) {
+
+        input.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Enter") {
+
+                    if (
+                        input.value.trim() === ""
+                    ) {
+
+                        event.preventDefault();
+
+                        alert(
+                            "Please enter a meal name."
+                        );
+
+                    }
+
+                }
+
+            }
+        );
+
+    });
+
+
+
+    /* =====================================
+       RECIPE FORM VALIDATION
+    ===================================== */
+
+    const recipeForm =
+        document.querySelector(
+            ".recipe-form"
+        );
+
+
+    if (recipeForm) {
+
+        recipeForm.addEventListener(
+            "submit",
+            function (event) {
+
+                const name =
+                    document.getElementById(
+                        "name"
+                    );
+
+
+                const category =
+                    document.getElementById(
+                        "category"
+                    );
+
+
+                const instructions =
+                    document.getElementById(
+                        "instructions"
+                    );
+
+
+                if (
+                    !name ||
+                    !name.value.trim()
+                ) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please enter the meal name."
+                    );
+
+                    name.focus();
+
+                    return;
+
+                }
+
+
+                if (
+                    !category ||
+                    !category.value
+                ) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please select a category."
+                    );
+
+                    category.focus();
+
+                    return;
+
+                }
+
+
+                if (
+                    !instructions ||
+                    !instructions.value.trim()
+                ) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please enter cooking instructions."
+                    );
+
+                    instructions.focus();
+
+                    return;
+
+                }
+
+            }
+        );
+
+    }
+
+
+
+    /* =====================================
+       SMOOTH SCROLL
+    ===================================== */
+
+    document.querySelectorAll(
+        'a[href^="#"]'
+    ).forEach(function (link) {
+
+        link.addEventListener(
+            "click",
+            function (event) {
+
+                const target =
+                    document.querySelector(
+                        this.getAttribute("href")
+                    );
+
+
+                if (target) {
+
+                    event.preventDefault();
+
+                    target.scrollIntoView({
+                        behavior: "smooth"
+                    });
+
+                }
+
+            }
+        );
+
+    });
+
+});
+
+function addIngredient() {
+
+    const container =
+        document.getElementById("ingredients-container");
+
+    const row =
+        document.createElement("div");
+
+    row.className = "ingredient-row";
+
+    row.innerHTML = `
+        <input
+            type="text"
+            name="ingredient_name"
+            placeholder="Ingredient name"
+        >
+
+        <input
+            type="text"
+            name="quantity"
+            placeholder="Quantity"
+        >
+
+        <input
+            type="text"
+            name="ingredient_image"
+            placeholder="Image path"
+        >
+
+        <button
+            type="button"
+            class="remove-ingredient"
+            onclick="removeIngredient(this)"
+        >
+            Remove
+        </button>
+    `;
+
+    container.appendChild(row);
+}
+
+
+function removeIngredient(button) {
+
+    button.parentElement.remove();
+
+}

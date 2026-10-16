@@ -1,0 +1,416 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+MealNest | Discover Delicious Meals
+{% endblock %}
+
+
+{% block content %}
+
+
+<!-- =========================
+     HERO SECTION
+========================= -->
+
+<section class="hero">
+
+    <div class="hero-text">
+
+        <span class="hero-label">
+            WELCOME TO MEALNEST
+        </span>
+
+
+        <h1>
+
+            Discover
+
+            <span>
+                Delicious Meals
+            </span>
+
+        </h1>
+
+
+        <p>
+
+            Explore amazing recipes, discover
+            ingredients and learn how to prepare
+            your favorite meals at home.
+
+        </p>
+
+
+        <!-- SEARCH -->
+
+        <form
+            action="{{ url_for('search') }}"
+            method="GET"
+            class="hero-search">
+
+            <input
+                type="text"
+                name="q"
+                placeholder="Search for a meal..."
+                required>
+
+            <button type="submit">
+                Search
+            </button>
+
+        </form>
+
+
+        <div class="hero-buttons">
+
+            <a href="{{ url_for('explore') }}"
+               class="primary-btn">
+
+                Explore Meals →
+
+            </a>
+
+
+            <a href="{{ url_for('add_recipe') }}"
+               class="secondary-btn">
+
+                + Add Recipe
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         ROTATING DISHES
+    ========================== -->
+
+    <div class="dish-area">
+
+
+        <div class="dish-circle"></div>
+
+
+        <div class="dish dish-1">
+
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='images/meals/burger.jpg'
+                ) }}"
+                alt="Burger">
+
+        </div>
+
+
+        <div class="dish dish-2">
+
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='images/meals/pizza.jpg'
+                ) }}"
+                alt="Pizza">
+
+        </div>
+
+
+        <div class="dish dish-3">
+
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='images/meals/pasta.jpg'
+                ) }}"
+                alt="Pasta">
+
+        </div>
+
+
+        <div class="dish dish-4">
+
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='images/meals/salad.jpg'
+                ) }}"
+                alt="Salad">
+
+        </div>
+
+
+        <div class="main-dish">
+
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='images/meals/burger.jpg'
+                ) }}"
+                alt="Featured Meal">
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     STATISTICS
+========================= -->
+
+<section class="stats">
+
+    <div class="stat-card">
+
+        <span class="stat-icon">
+            🍽️
+        </span>
+
+        <div>
+
+            <strong>
+                {{ total_meals }}
+            </strong>
+
+            <p>
+                Total Meals
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <span class="stat-icon">
+            🥕
+        </span>
+
+        <div>
+
+            <strong>
+                {{ total_ingredients }}
+            </strong>
+
+            <p>
+                Total Ingredients
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <span class="stat-icon">
+            📷
+        </span>
+
+        <div>
+
+            <strong>
+                {{ total_images }}
+            </strong>
+
+            <p>
+                Meal Images
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     CATEGORIES
+========================= -->
+
+<section class="home-categories">
+
+    <div class="section-title">
+        <span>EXPLORE BY CATEGORY</span>
+        <h2>What are you craving? 🍽️</h2>
+        <p>Discover delicious recipes for every time of the day.</p>
+    </div>
+
+    <div class="home-category-grid">
+
+        {% for category in categories %}
+
+        <a href="{{ url_for('category', category=category['category']) }}"
+           class="home-category-card">
+
+            <div class="home-category-icon">
+
+                {% if category['category'] == 'Breakfast' %}
+                    🥞
+                {% elif category['category'] == 'Lunch' %}
+                    🍛
+                {% elif category['category'] == 'Dinner' %}
+                    🍝
+                {% elif category['category'] == 'Dessert' %}
+                    🍰
+                {% elif category['category'] == 'Beverages' %}
+                    ☕
+                {% elif category['category'] == 'Snacks' %}
+                    🍿
+                {% else %}
+                    🍴
+                {% endif %}
+
+            </div>
+
+            <h3>{{ category['category'] }}</h3>
+
+            <p>{{ category['meal_count'] }} recipes</p>
+
+            <span>Explore →</span>
+
+        </a>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     LATEST MEALS
+========================= -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div>
+
+            <span>
+                DISCOVER
+            </span>
+
+            <h2>
+                Latest Meals
+            </h2>
+
+        </div>
+
+
+        <a href="{{ url_for('explore') }}">
+            View All →
+        </a>
+
+    </div>
+
+
+    <div class="meal-grid">
+
+        {% for meal in meals %}
+
+        <article class="meal-card">
+
+
+            <div class="meal-image">
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename=meal.image
+                    ) }}"
+                    alt="{{ meal.name }}">
+
+
+                <span class="meal-tag">
+                    {{ meal.category }}
+                </span>
+
+            </div>
+
+
+            <div class="meal-info">
+
+                <h3>
+                    {{ meal.name }}
+                </h3>
+
+
+                <p>
+                    Delicious and easy to prepare.
+                </p>
+
+
+                <a
+                    href="{{ url_for(
+                        'recipe',
+                        meal_id=meal.id
+                    ) }}">
+
+                    View Recipe →
+
+                </a>
+
+            </div>
+
+        </article>
+
+        {% else %}
+
+        <p class="no-results">
+            No meals available yet.
+        </p>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     ADD RECIPE BANNER
+========================= -->
+
+<section class="recipe-banner">
+
+    <div>
+
+        <span>
+            YOUR RECIPE, YOUR WAY
+        </span>
+
+
+        <h2>
+            Have a Favorite Recipe?
+        </h2>
+
+
+        <p>
+            Add your own recipe with ingredients,
+            image and cooking instructions.
+        </p>
+
+    </div>
+
+
+    <a href="{{ url_for('add_recipe') }}">
+
+        + Add New Recipe
+
+    </a>
+
+</section>
+
+
+{% endblock %}

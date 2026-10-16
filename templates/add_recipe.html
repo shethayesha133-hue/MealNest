@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Recipe | MealNest
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+
+    <span>MEALNEST</span>
+
+    <h1>Add Your Recipe</h1>
+
+    <p>
+        Share your favorite meal with the MealNest community.
+    </p>
+
+</section>
+
+
+<section class="add-recipe-container">
+
+    <div class="add-recipe-card">
+
+        <div class="form-heading">
+
+            <span>CREATE RECIPE</span>
+
+            <h2>Manually Add a New Recipe</h2>
+
+            <p>x
+                Enter your meal details, ingredients and cooking
+                instructions below.
+            </p>
+
+        </div>
+
+
+        <form
+            action="{{ url_for('add_recipe') }}"
+            method="POST"
+            enctype="multipart/form-data"
+            class="recipe-form">
+
+
+            <!-- MEAL NAME -->
+
+            <div class="form-group">
+
+                <label for="name">
+                    Meal Name
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Example: Chicken Burger"
+                    required>
+
+            </div>
+
+
+            <!-- CATEGORY -->
+
+            <div class="form-group">
+
+                <label for="category">
+                    Category
+                </label>
+
+                <select
+                    id="category"
+                    name="category"
+                    required>
+
+                    <option value="">
+                        Select Category
+                    </option>
+
+                    <option value="Burger">
+                        Burger
+                    </option>
+
+                    <option value="Pizza">
+                        Pizza
+                    </option>
+
+                    <option value="Pasta">
+                        Pasta
+                    </option>
+
+                    <option value="Salad">
+                        Salad
+                    </option>
+
+                    <option value="Dessert">
+                        Dessert
+                    </option>
+
+                    <option value="Drinks">
+                        Drinks
+                    </option>
+
+                    <option value="Chicken">
+                        Chicken
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- IMAGE -->
+
+            <div class="form-group">
+
+                <label for="image">
+                    Meal Image
+                </label>
+
+                <div class="file-input">
+
+                    <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        accept="image/*">
+
+                </div>
+
+                <small>
+                    Upload a JPG, PNG or WEBP image.
+                </small>
+
+            </div>
+
+
+            <!-- INGREDIENTS -->
+
+            <div class="form-group">
+
+                <label>
+                    Ingredients
+                </label>
+
+                <div id="ingredients-container">
+
+                    <div class="ingredient-input-row">
+
+                        <input
+                            type="text"
+                            name="ingredient_name[]"
+                            placeholder="Ingredient name"
+                            required>
+
+                        <input
+                            type="text"
+                            name="ingredient_quantity[]"
+                            placeholder="Quantity"
+                            required>
+
+                        <button
+                            type="button"
+                            class="remove-ingredient"
+                            onclick="removeIngredient(this)">
+
+                            ×
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="add-ingredient-btn"
+                    onclick="addIngredient()">
+
+                    + Add Ingredient
+
+                </button>
+
+            </div>
+
+
+            <!-- INSTRUCTIONS -->
+
+            <div class="form-group">
+
+                <label for="instructions">
+                    Cooking Instructions
+                </label>
+
+                <textarea
+                    id="instructions"
+                    name="instructions"
+                    rows="8"
+                    placeholder="Write each cooking step on a new line..."
+                    required></textarea>
+
+                <small>
+                    Example: Prepare the ingredients.
+                    Cook the patty.
+                    Assemble the burger.
+                </small>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="form-actions">
+
+                <a
+                    href="{{ url_for('home') }}"
+                    class="cancel-btn">
+
+                    Cancel
+
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="submit-recipe-btn">
+
+                    + Add Recipe
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- SIDE INFORMATION -->
+
+    <aside class="recipe-tips">
+
+        <div class="tips-icon">
+            🍴
+        </div>
+
+        <h2>
+            Recipe Tips
+        </h2>
+
+        <ul>
+
+            <li>
+                Use a clear and attractive meal image.
+            </li>
+
+            <li>
+                Add all important ingredients.
+            </li>
+
+            <li>
+                Mention the correct quantity.
+            </li>
+
+            <li>
+                Write instructions step by step.
+            </li>
+
+            <li>
+                Choose the correct category.
+            </li>
+
+        </ul>
+
+    </aside>
+
+</section>
+
+{% endblock %}

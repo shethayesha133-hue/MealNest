@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+
+{% block title %}
+Edit Recipe | MealNest
+{% endblock %}
+
+{% block content %}
+
+<section class="edit-recipe-section">
+
+    <div class="edit-recipe-container">
+
+        <div class="edit-header">
+
+            <span>MEALNEST</span>
+
+            <h1>✏️ Edit Recipe</h1>
+
+            <p>
+                Update your recipe information below.
+            </p>
+
+        </div>
+
+
+        <form
+            action="{{ url_for('edit_recipe', meal_id=meal.id) }}"
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            <!-- RECIPE NAME -->
+
+            <div class="form-group">
+
+                <label for="name">
+                    Recipe Name
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value="{{ meal.name }}"
+                    required
+                >
+
+            </div>
+
+
+            <!-- CATEGORY -->
+
+            <div class="form-group">
+
+                <label for="category">
+                    Category
+                </label>
+
+                <select
+                    id="category"
+                    name="category"
+                    required
+                >
+
+                    <option value="Breakfast"
+                        {% if meal.category == "Breakfast" %}selected{% endif %}>
+                        Breakfast
+                    </option>
+
+                    <option value="Lunch"
+                        {% if meal.category == "Lunch" %}selected{% endif %}>
+                        Lunch
+                    </option>
+
+                    <option value="Dinner"
+                        {% if meal.category == "Dinner" %}selected{% endif %}>
+                        Dinner
+                    </option>
+
+                    <option value="Dessert"
+                        {% if meal.category == "Dessert" %}selected{% endif %}>
+                        Dessert
+                    </option>
+
+                    <option value="Drinks"
+                        {% if meal.category == "Drinks" %}selected{% endif %}>
+                        Drinks
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- CURRENT IMAGE -->
+
+            <div class="current-image">
+
+                <label>Current Image</label>
+
+                {% if meal.image %}
+
+                    <img
+                        src="{{ url_for('static', filename=meal.image) }}"
+                        alt="{{ meal.name }}"
+                    >
+
+                {% else %}
+
+                    <p>No image available.</p>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- NEW IMAGE -->
+
+            <div class="form-group">
+
+                <label for="image">
+                    Change Image
+                </label>
+
+                <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    accept="image/*"
+                >
+
+            </div>
+
+
+            <!-- INSTRUCTIONS -->
+
+            <div class="form-group">
+
+                <label for="instructions">
+                    Cooking Instructions
+                </label>
+
+                <textarea
+                    id="instructions"
+                    name="instructions"
+                    rows="8"
+                    required
+                >{{ meal.instructions }}</textarea>
+
+            </div>
+
+
+            <!-- INGREDIENTS -->
+
+            <div class="ingredients-edit-section">
+
+                <h2>Ingredients</h2>
+
+                <div id="ingredients-container">
+
+                    {% for ingredient in ingredients %}
+
+                    <div class="ingredient-row">
+
+                        <input
+                            type="text"
+                            name="ingredient_name"
+                            value="{{ ingredient.name }}"
+                            placeholder="Ingredient name"
+                        >
+
+                        <input
+                            type="text"
+                            name="quantity"
+                            value="{{ ingredient.quantity }}"
+                            placeholder="Quantity"
+                        >
+
+                        <input
+                            type="text"
+                            name="ingredient_image"
+                            value="{{ ingredient.image }}"
+                            placeholder="Image path"
+                        >
+
+                        <button
+                            type="button"
+                            class="remove-ingredient"
+                            onclick="removeIngredient(this)"
+                        >
+                            Remove
+                        </button>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="add-ingredient-btn"
+                    onclick="addIngredient()"
+                >
+                    + Add Ingredient
+                </button>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="edit-buttons">
+
+                <button
+                    type="submit"
+                    class="update-btn"
+                >
+                    💾 Update Recipe
+                </button>
+
+                <a
+                    href="{{ url_for('recipe', meal_id=meal.id) }}"
+                    class="cancel-btn"
+                >
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}

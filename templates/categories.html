@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}
+Categories | MealNest
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+    <span>EXPLORE BY MOOD</span>
+
+    <h1>Food Categories 🍽️</h1>
+
+    <p>
+        Find the perfect recipe for every moment of your day.
+    </p>
+</section>
+
+
+<section class="categories-section">
+
+    <div class="category-grid">
+
+        {% for category in categories %}
+
+        <a href="{{ url_for('category', category=category['category']) }}"
+           class="category-card">
+
+            <div class="category-icon">
+
+                {% if category['category'] == 'Breakfast' %}
+                    🥞
+
+                {% elif category['category'] == 'Lunch' %}
+                    🍛
+
+                {% elif category['category'] == 'Dinner' %}
+                    🍝
+
+                {% elif category['category'] == 'Dessert' %}
+                    🍰
+
+                {% elif category['category'] == 'Beverages' %}
+                    ☕
+
+                {% elif category['category'] == 'Snacks' %}
+                    🍿
+
+                {% else %}
+                    🍴
+                {% endif %}
+
+            </div>
+
+            <div class="category-content">
+
+                <h2>
+                    {{ category['category'] }}
+                </h2>
+
+                <p>
+                    {{ category['meal_count'] }} recipes
+                </p>
+
+                <span class="category-link">
+                    Explore meals →
+                </span>
+
+            </div>
+
+        </a>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

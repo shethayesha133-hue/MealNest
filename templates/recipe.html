@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ meal.name }} | MealNest
+{% endblock %}
+
+{% block content %}
+
+<section class="recipe-page">
+
+    <!-- =========================
+         RECIPE HEADER
+    ========================== -->
+
+    <div class="recipe-header">
+
+        <div class="recipe-main-image">
+
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename=meal.image
+                ) }}"
+                alt="{{ meal.name }}">
+
+        </div>
+
+
+        <div class="recipe-intro">
+
+            <span class="recipe-category">
+                {{ meal.category }}
+            </span>
+
+
+            <h1>
+                {{ meal.name }}
+            </h1>
+
+
+            <p>
+                Discover the ingredients and
+                simple cooking instructions
+                for this delicious meal.
+            </p>
+
+
+            <a href="{{ url_for('explore') }}" class="back-explore-btn">
+                ← Back to Explore
+            </a>
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         INGREDIENTS
+    ========================== -->
+
+    <section class="recipe-section">
+
+        <div class="recipe-section-title">
+
+            <span>
+                WHAT YOU NEED
+            </span>
+
+            <h2>
+                Ingredients
+            </h2>
+
+        </div>
+
+
+        <div class="ingredients-grid">
+
+            {% for ingredient in ingredients %}
+
+            <div class="ingredient-card">
+
+
+                {% if ingredient.image %}
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename=ingredient.image
+                    ) }}"
+                    alt="{{ ingredient.name }}">
+
+                {% else %}
+
+                <div class="ingredient-placeholder">
+                    🥕
+                </div>
+
+                {% endif %}
+
+
+                <div>
+
+                    <h3>
+                        {{ ingredient.name }}
+                    </h3>
+
+
+                    <p>
+                        {{ ingredient.quantity }}
+                    </p>
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <p>
+                No ingredients available.
+            </p>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         INSTRUCTIONS
+    ========================== -->
+
+    <section class="recipe-section instructions">
+
+        <div class="recipe-section-title">
+
+            <span>
+                COOKING GUIDE
+            </span>
+
+            <h2>
+                Instructions
+            </h2>
+
+        </div>
+
+
+        <div class="instructions-box">
+
+            {% if meal.instructions %}
+
+                {% for step in meal.instructions.split('\n') %}
+
+                    {% if step.strip() %}
+
+                    <div class="instruction-step">
+
+                        <span class="step-number">
+                            {{ loop.index }}
+                        </span>
+
+
+                        <p>
+                            {{ step }}
+                        </p>
+
+                    </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            {% else %}
+
+                <p>
+                    No cooking instructions available.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+</section>
+
+{% endblock %}

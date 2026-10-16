@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ category }} | MealNest
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+
+    <span>MEAL CATEGORY</span>
+
+    <h1>
+        {{ category }}
+    </h1>
+
+    <p>
+        Delicious {{ category }} recipes to explore.
+    </p>
+
+</section>
+
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div>
+
+            <span>
+                {{ meals|length }} RECIPES
+            </span>
+
+            <h2>
+                {{ category }} Meals
+            </h2>
+
+        </div>
+
+
+        <a href="{{ url_for('categories') }}">
+            ← All Categories
+        </a>
+
+    </div>
+
+
+    <div class="meal-grid">
+
+        {% for meal in meals %}
+
+        <article class="meal-card">
+
+            <div class="meal-image">
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename=meal.image
+                    ) }}"
+                    alt="{{ meal.name }}"
+                    onerror="this.style.display='none';">
+
+
+                <span class="meal-tag">
+                    {{ meal.category }}
+                </span>
+
+            </div>
+
+
+            <div class="meal-info">
+
+                <h3>
+                    {{ meal.name }}
+                </h3>
+
+
+                <p>
+                    Discover ingredients and
+                    cooking instructions.
+                </p>
+
+
+                <a
+                    href="{{ url_for(
+                        'recipe',
+                        meal_id=meal.id
+                    ) }}">
+
+                    View Recipe →
+
+                </a>
+
+            </div>
+
+        </article>
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <div>🍽️</div>
+
+            <h2>
+                No Meals Found
+            </h2>
+
+            <p>
+                There are no meals in this category yet.
+            </p>
+
+
+            <a href="{{ url_for('add_recipe') }}">
+                + Add Recipe
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}
